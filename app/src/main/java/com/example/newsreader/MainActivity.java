@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> found=new ArrayList<>();
     ArrayList<String> lost=new ArrayList<>();
    public void updateList(){
-        Cursor c=databse.rawQuery("SELECT * FROM data",null);
+        Cursor c=databse.rawQuery("SELECT * FROM datae",null);
         int a=c.getColumnIndex("title");
         Log.i("no","found u");
         int b=c.getColumnIndex("name");
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 if(fix.length()<20){
                     total=fix.length();
                 }
-                databse.execSQL("DELETE FROM data");
+                databse.execSQL("DELETE FROM datae");
                 for(int i=0;i<total;i++){
                     String s=fix.getString(i);
                     url=new URL("https://hacker-news.firebaseio.com/v0/item/"+s+".json?print=pretty");
@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     if(!curl.isNull("title")&&!curl.isNull("url")) {
                         String tile = curl.getString("title");
                         String urls = curl.getString("url");
-                        //databse.execSQL("INSERT INTO data(title) VALUES(tile)");
-                        String mouse="INSERT INTO data(title,name) VALUES(?,?)";
+                        String mouse="INSERT INTO datae(title,name) VALUES(?,?)";
                         SQLiteStatement space=databse.compileStatement(mouse);
                         space.bindString(1,tile);
                         space.bindString(2,urls);
@@ -120,9 +119,8 @@ public class MainActivity extends AppCompatActivity {
         outlook=findViewById(R.id.lost);
         buck=new ArrayAdapter(this,android.R.layout.simple_list_item_1,found);
         try {
-            databse = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
-            databse.execSQL("CREATE TABLE IF NOT EXISTS data (title VARCHAR)");
-            updateList();
+            databse = this.openOrCreateDatabase("Datae", MODE_PRIVATE, null);
+            databse.execSQL("CREATE TABLE IF NOT EXISTS datae (title VARCHAR,name VARCHAR)");
         }
         catch(Exception e){
             e.printStackTrace();
@@ -145,5 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(get);
             }
         });
+        updateList();
     }
 }
